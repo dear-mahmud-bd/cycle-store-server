@@ -3,6 +3,9 @@ import { TProduct } from './product.interface';
 import { Product } from './product.model';
 
 const createProductIntoDB = async (productData: TProduct) => {
+  if (await Product.isNameExists(productData.name)) {
+    throw new Error('Product already exists!');
+  }
   const result = await Product.create(productData);
   return result;
 };
@@ -13,6 +16,7 @@ const getAllProductsFromDB = async () => {
 };
 
 const getSingleProductFromDB = async (id: string) => {
+  // const result = await Product.findOne({ _id: new Types.ObjectId(id) });
   const result = await Product.aggregate([
     { $match: { _id: new Types.ObjectId(id) } },
   ]);

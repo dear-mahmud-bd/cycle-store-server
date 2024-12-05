@@ -7,6 +7,7 @@ const productSchema = new Schema<TProduct, ProductModel>(
       type: String,
       required: [true, 'Product name is required'],
       trim: true,
+      unique: true,
     },
     brand: {
       type: String,
@@ -48,5 +49,29 @@ const productSchema = new Schema<TProduct, ProductModel>(
     timestamps: true,
   },
 );
+
+// Query Middleware (current querry)
+productSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } }).select('-isDeleted');
+  next();
+});
+productSchema.pre('findOne', function (next) {
+  this.findOne({ isDeleted: { $ne: true } }).select('-isDeleted');
+  next();
+});
+
+// Aggregation middeware (pipeline)
+productSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift(
+    { $match: { isDeleted: { $ne: true } } },
+    { $unset: 'isDeleted' },
+  );
+  next();
+});
+
+//create a custom static method
+productSchema.statics.isNameExists = async function (name: string) {
+  return await this.findOne({ name });
+};
 
 export const Product = model<TProduct, ProductModel>('Product', productSchema);
