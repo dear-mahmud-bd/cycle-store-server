@@ -19,7 +19,7 @@ const createProduct = async (req: Request, res: Response) => {
   } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: err.message || 'something went wrong',
+      message: err?.issues[0]?.message || 'something went wrong',
       error: err,
     });
   }
@@ -27,15 +27,20 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const result = await ProductServices.getAllProductsFromDB();
+    const search = req.query;
+    const result = await ProductServices.getAllProductsFromDB(search);
     res.status(200).json({
       success: true,
       message: 'Products are retrieved succesfully',
       data: result,
     });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
   }
 };
 
@@ -48,9 +53,13 @@ const getSingleProduct = async (req: Request, res: Response) => {
       message: 'Single product is retrieved succesfully',
       data: result,
     });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
   }
 };
 
@@ -69,9 +78,13 @@ const updateSingleProduct = async (req: Request, res: Response) => {
       message: 'Single product is updated succesfully',
       data: result,
     });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
   }
 };
 
@@ -84,9 +97,13 @@ const deleteSingleProduct = async (req: Request, res: Response) => {
       message: 'Product is deleted succesfully',
       data: result,
     });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
   }
 };
 
