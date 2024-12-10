@@ -14,7 +14,7 @@ app.use('/api/v1/products', ProductRoutes);
 app.use('/api/v1/orders', OrderRoutes);
 
 const getAController = (req: Request, res: Response) => {
-  res.send('Hello TypeScript!!!!!');
+  res.send('Hello TypeScript :)');
 };
 app.get('/', getAController);
 

@@ -27,6 +27,10 @@ const getSingleProductFromDB = async (id: string) => {
   const result = await Product.aggregate([
     { $match: { _id: new Types.ObjectId(id) } },
   ]);
+
+  if (result.length <= 0) {
+    throw new Error('Product not found');
+  }
   return result;
 };
 
@@ -34,11 +38,20 @@ const updateSingleProductDataFromDB = async (
   id: string,
   updates: Partial<TProduct>,
 ): Promise<TProduct | null> => {
+  if (updates.quantity !== undefined && updates.quantity > 0) {
+    updates.inStock = true;
+  } else if (updates.quantity !== undefined && updates.quantity <= 0) {
+    updates.inStock = false;
+  }
+
   const result = await Product.findByIdAndUpdate(
     new Types.ObjectId(id),
     { $set: updates },
     { new: true, runValidators: true }, // for validation
   );
+  if (!result) {
+    throw new Error('Product not found');
+  }
   return result;
 };
 
@@ -47,6 +60,11 @@ const deleteProductFromDB = async (id: string) => {
     { _id: new Types.ObjectId(id) },
     { $set: { isDeleted: true } },
   );
+
+  if (result.modifiedCount === 0) {
+    throw new Error('Product not found');
+  }
+
   return result;
 };
 

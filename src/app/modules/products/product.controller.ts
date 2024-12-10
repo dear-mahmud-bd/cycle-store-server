@@ -12,14 +12,14 @@ const createProduct = async (req: Request, res: Response) => {
     // send response
     res.status(200).json({
       success: true,
-      message: 'Product is created successfully',
+      message: 'Bicycle is created successfully',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: err?.issues[0]?.message || 'something went wrong',
+      message: err.message || err.message || 'something went wrong',
       error: err,
     });
   }
@@ -31,7 +31,7 @@ const getAllProducts = async (req: Request, res: Response) => {
     const result = await ProductServices.getAllProductsFromDB(search);
     res.status(200).json({
       success: true,
-      message: 'Products are retrieved succesfully',
+      message: 'Bicycles retrieved succesfully',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -50,7 +50,7 @@ const getSingleProduct = async (req: Request, res: Response) => {
     const result = await ProductServices.getSingleProductFromDB(productId);
     res.status(200).json({
       success: true,
-      message: 'Single product is retrieved succesfully',
+      message: 'Bicycle is retrieved succesfully',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -75,7 +75,7 @@ const updateSingleProduct = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'Single product is updated succesfully',
+      message: 'Bicycle is updated succesfully',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -94,7 +94,7 @@ const deleteSingleProduct = async (req: Request, res: Response) => {
     const result = await ProductServices.deleteProductFromDB(productId);
     res.status(200).json({
       success: true,
-      message: 'Product is deleted succesfully',
+      message: 'Bicycle deleted succesfully',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
