@@ -4,7 +4,7 @@ import productValidationSchema from './product.validation';
 
 const createProduct = async (req: Request, res: Response) => {
   try {
-    const { product: productData } = req.body;
+    const productData = req.body;
     const zodParsedData = productValidationSchema.parse(productData);
     // will call service function (with send this data)
     // after processing (sql/nosql) received response
@@ -12,7 +12,7 @@ const createProduct = async (req: Request, res: Response) => {
     // send response
     res.status(200).json({
       success: true,
-      message: 'Bicycle is created successfully',
+      message: 'Bicycle created successfully',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

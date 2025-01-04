@@ -15,11 +15,12 @@ const orderSchema = new Schema<TOrder>(
     },
     quantity: {
       type: Number,
-      required: true,
+      required: [true, 'Quantity is required'],
+      min: [1, 'Quantity must be atleast 1'],
     },
     totalPrice: {
       type: Number,
-      required: true,
+      required: [true, 'Quantity is required'],
     },
   },
   {

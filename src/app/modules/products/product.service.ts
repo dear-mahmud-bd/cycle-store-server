@@ -38,6 +38,12 @@ const updateSingleProductDataFromDB = async (
   id: string,
   updates: Partial<TProduct>,
 ): Promise<TProduct | null> => {
+  // to check is deleted property false or true
+  const deletedData = await Product.findOne({ _id: new Types.ObjectId(id) });
+  if (deletedData == null) {
+    throw new Error('Product not found');
+  }
+
   if (updates.quantity !== undefined && updates.quantity > 0) {
     updates.inStock = true;
   } else if (updates.quantity !== undefined && updates.quantity <= 0) {
@@ -48,7 +54,7 @@ const updateSingleProductDataFromDB = async (
     new Types.ObjectId(id),
     { $set: updates },
     { new: true, runValidators: true }, // for validation
-  );
+  ).select('-isDeleted');
   if (!result) {
     throw new Error('Product not found');
   }
@@ -56,16 +62,20 @@ const updateSingleProductDataFromDB = async (
 };
 
 const deleteProductFromDB = async (id: string) => {
+  const deletedData = await Product.findOne({ _id: new Types.ObjectId(id) });
+  if (deletedData == null) {
+    throw new Error('Product not found');
+  }
   const result = await Product.updateOne(
     { _id: new Types.ObjectId(id) },
     { $set: { isDeleted: true } },
   );
 
   if (result.modifiedCount === 0) {
-    throw new Error('Product not found');
+    throw new Error('Product not deleted');
   }
 
-  return result;
+  return {};
 };
 
 export const ProductServices = {
