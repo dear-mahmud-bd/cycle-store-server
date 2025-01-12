@@ -1,8 +1,13 @@
 
-# Inventory(Bicycle) Management [API](https://bicycle-store-04.vercel.app/)
+# Bicycle Inventory Management [API](https://bicycle-store-04.vercel.app/)
 
 ## Introduction
-The **Inventory Management API** is a backend application built with TypeScript and Node.js. It allows efficient management of products and orders, supporting features like product creation, stock management, order processing, and revenue calculations. The application ensures type safety, better code management, and extensibility through TypeScript.
+The **Bicycle Inventory Management API** is a backend application built with TypeScript and Node.js. It allows efficient management of products and orders, supporting features like product creation, stock management, order processing, and revenue calculations. The application ensures type safety, better code management, and extensibility through TypeScript.
+
+---
+
+## Live Demo
+Explore the live application here: **[Live URL](https://bicycle-store-04.vercel.app/)**
 
 ---
 
@@ -42,110 +47,36 @@ The **Inventory Management API** is a backend application built with TypeScript 
 
 ---
 
-## Project Setup
-
-### 1. Initialize the Project
-```bash
-npm init -y
-```
-
-### 2. Install Dependencies
-```bash
-npm install cors dotenv express mongoose bcrypt zod
-```
-
-### 3. Install TypeScript and Configure
-```bash
-npm install typescript --save-dev
-tsc --init
-```
-
-- Update the `tsconfig.json`:
-  ```json
-  {
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "include": ["src"],
-    "exclude": ["node_modules"]
-  }
-  ```
-
-- Add a `build` script to compile TypeScript:
-  ```json
-  "scripts": {
-    "build": "tsc"
-  }
-  ```
-
-- Create the `src` folder for all source files.
-
-### 4. Set Up `.env` Configuration
-- Create `src/app/config/index.ts`:
-  
-  ```typescript
-  import dotenv from 'dotenv';
-  import path from 'path';
-
-  dotenv.config({ path: path.join(__dirname, '../../../.env') });
-  ```
-
-### 5. Install Development Dependencies
-```bash
-npm install --save-dev @types/express @types/cors ts-node-dev
-```
-
-### 6. Set Up ESLint and Prettier
-- Install ESLint and Prettier:
-  ```bash
-  npm install eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin prettier eslint-config-prettier --save-dev
-  ```
-
-- Initialize ESLint:
-  ```bash
-  npx eslint --init
-  ```
-
-- Add rules for Prettier compatibility in your ESLint configuration (`eslint.config.mjs`):
-  ```javascript
-  export default [
-    {
-        files: ["**/*.{js,mjs,cjs,ts}"],
-        ignores: ["node_modules/**", "dist/**"],
-    },
-    { languageOptions: { globals: { ...globals.browser, process: "readonly" } } },
-    {
-        rules: {
-        "no-unused-vars": "error",
-        "no-unused-expressions": "error",
-        "prefer-const": "error",
-        "no-console": "warn",
-        "no-undef": "error",
-        },
-    },
-    pluginJs.configs.recommended,
-    ...tseslint.configs.recommended,
-    eslintPluginPrettierRecommended,
-  ];
-  ```
-
-### 7. Run the Application
-- Use `ts-node-dev` for development:
-  ```bash
-  npm run start:dev
-  ```
-
-- Build the TypeScript files:
-  ```bash
-  npm run build
-  ```
-
 ---
 
-## Scripts
-- `build`: Compiles TypeScript files to JavaScript.
-- `dev`: Runs the application in development mode with `ts-node-dev`.
-- `lint`: Runs ESLint to check for code quality issues.
-- `format`: Formats the code using Prettier.
+## Installation and Setup (Locally)
+
+1. **Clone the Repository**  
+   ```bash
+   git clone https://github.com/dear-mahmud-bd/cycle-store-server-with-mongoose.git  
+   cd cycle-store-server-with-mongoose  
+   ```  
+
+2. **Install Dependencies**  
+   ```bash
+   npm install  
+   ```  
+
+3. **Environment Configuration**  
+   Create a `.env` file in the root directory:  
+   ```plaintext
+   NODE_ENV=development  
+   PORT= provide your port number  
+   DATABASE_URL= your MongoDB url (like: mongodb+srv://YOUR_SECRET_PROJECT:YOUR_SECRET_PASS@cluster0.1plyg.mongodb.net/blogs-data?retryWrites=true&w=majority&appName=YOUR_CLUSTER)
+   ```  
+
+4. **Run the Application**  
+   ```bash
+   npm run start:dev
+   ```  
+
+5. **Visit the Application**  
+   Open your browser and navigate to: `http://localhost:5000`  
 
 ---
 
