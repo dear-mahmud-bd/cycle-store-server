@@ -1,111 +1,71 @@
 import { Request, Response } from 'express';
 import { ProductServices } from './product.service';
 import productValidationSchema from './product.validation';
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
-const createProduct = async (req: Request, res: Response) => {
-  try {
-    const productData = req.body;
-    const zodParsedData = productValidationSchema.parse(productData);
-    // will call service function (with send this data)
-    // after processing (sql/nosql) received response
-    const result = await ProductServices.createProductIntoDB(zodParsedData);
-    // send response
-    res.status(200).json({
-      success: true,
-      message: 'Bicycle created successfully',
-      data: result,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || err.message || 'something went wrong',
-      error: err,
-    });
-  }
-};
+const createProduct = catchAsync(async (req: Request, res: Response) => {
+  const productData = req.body;
+  const zodParsedData = productValidationSchema.parse(productData);
+  // will call service function (with send this data)
+  // after processing (sql/nosql) received response
+  const result = await ProductServices.createProductIntoDB(zodParsedData);
+  sendResponse(res, {
+    success: true,
+    message: 'Bicycle created successfully',
+    statusCode: httpStatus.CREATED,
+    data: result,
+  });
+});
 
-const getAllProducts = async (req: Request, res: Response) => {
-  try {
-    const search = req.query;
-    const result = await ProductServices.getAllProductsFromDB(search);
-    res.status(200).json({
-      success: true,
-      message: 'Bicycles retrieved succesfully',
-      data: result,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || 'something went wrong',
-      error: err,
-    });
-  }
-};
+const getAllProducts = catchAsync(async (req: Request, res: Response) => {
+  const search = req.query;
+  const result = await ProductServices.getAllProductsFromDB(search);
+  sendResponse(res, {
+    success: true,
+    message: 'Bicycles retrieved succesfully',
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
 
-const getSingleProduct = async (req: Request, res: Response) => {
-  try {
-    const { productId } = req.params;
-    const result = await ProductServices.getSingleProductFromDB(productId);
-    res.status(200).json({
-      success: true,
-      message: 'Bicycle is retrieved succesfully',
-      data: result,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || 'something went wrong',
-      error: err,
-    });
-  }
-};
+const getSingleProduct = catchAsync(async (req: Request, res: Response) => {
+  const { productId } = req.params;
+  const result = await ProductServices.getSingleProductFromDB(productId);
+  sendResponse(res, {
+    success: true,
+    message: 'Bicycle is retrieved succesfully',
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
 
-const updateSingleProduct = async (req: Request, res: Response) => {
-  try {
-    const { productId } = req.params;
-    const updates = req.body;
+const updateSingleProduct = catchAsync(async (req: Request, res: Response) => {
+  const { productId } = req.params;
+  const updates = req.body;
+  const result = await ProductServices.updateSingleProductDataFromDB(
+    productId,
+    updates,
+  );
+  sendResponse(res, {
+    success: true,
+    message: 'Bicycle is updated succesfully',
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
 
-    const result = await ProductServices.updateSingleProductDataFromDB(
-      productId,
-      updates,
-    );
-
-    res.status(200).json({
-      success: true,
-      message: 'Bicycle is updated succesfully',
-      data: result,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || 'something went wrong',
-      error: err,
-    });
-  }
-};
-
-const deleteSingleProduct = async (req: Request, res: Response) => {
-  try {
-    const { productId } = req.params;
-    const result = await ProductServices.deleteProductFromDB(productId);
-    res.status(200).json({
-      success: true,
-      message: 'Bicycle deleted succesfully',
-      data: result,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || 'something went wrong',
-      error: err,
-    });
-  }
-};
+const deleteSingleProduct = catchAsync(async (req: Request, res: Response) => {
+  const { productId } = req.params;
+  const result = await ProductServices.deleteProductFromDB(productId);
+  sendResponse(res, {
+    success: true,
+    message: 'Bicycle deleted succesfully',
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
 
 export const ProductController = {
   createProduct,

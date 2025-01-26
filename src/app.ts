@@ -1,7 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
-import { ProductRoutes } from './app/modules/products/product.route';
-import { OrderRoutes } from './app/modules/orders/order.route';
+import router from './app/routers';
 
 const app: Application = express();
 
@@ -10,10 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 // application routes
-// app.use('/api/v1/products', ProductRoutes);
-// app.use('/api/v1/orders', OrderRoutes);
-app.use('/api/products', ProductRoutes);
-app.use('/api/orders', OrderRoutes);
+app.use('/api', router);
 
 const getAController = (req: Request, res: Response) => {
   res.send('Hello TypeScript :)');
