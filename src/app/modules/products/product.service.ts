@@ -1,16 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Types } from 'mongoose';
 import { TProduct } from './product.interface';
 import { Product } from './product.model';
+import AppError from '../../errors/AppError';
+import httpStatus from 'http-status';
 
 const createProductIntoDB = async (productData: TProduct) => {
   if (await Product.isNameExists(productData.name)) {
-    throw new Error('Product already exists!');
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product already exists!');
   }
   const result = await Product.create(productData);
   return result;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getAllProductsFromDB = async (search: Record<string, any>) => {
   const query: Record<string, any> = {};
   for (const key in search) {

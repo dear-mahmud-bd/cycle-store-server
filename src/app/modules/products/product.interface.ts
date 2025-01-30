@@ -10,6 +10,7 @@ export enum BicycleType {
 
 export type TProduct = {
   name: string;
+  image: string;
   brand: string;
   price: number;
   type: BicycleType;

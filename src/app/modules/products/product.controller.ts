@@ -1,16 +1,14 @@
 import { Request, Response } from 'express';
 import { ProductServices } from './product.service';
-import productValidationSchema from './product.validation';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
 
 const createProduct = catchAsync(async (req: Request, res: Response) => {
   const productData = req.body;
-  const zodParsedData = productValidationSchema.parse(productData);
   // will call service function (with send this data)
   // after processing (sql/nosql) received response
-  const result = await ProductServices.createProductIntoDB(zodParsedData);
+  const result = await ProductServices.createProductIntoDB(productData);
   sendResponse(res, {
     success: true,
     message: 'Bicycle created successfully',

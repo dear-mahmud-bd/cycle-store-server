@@ -9,6 +9,11 @@ const productSchema = new Schema<TProduct, ProductModel>(
       trim: true,
       unique: true,
     },
+    image: {
+      type: String,
+      required: [true, 'Product Image is required'],
+      trim: true,
+    },
     brand: {
       type: String,
       required: [true, 'Brand is required'],
