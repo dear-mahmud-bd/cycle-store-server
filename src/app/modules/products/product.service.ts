@@ -12,16 +12,106 @@ const createProductIntoDB = async (productData: TProduct) => {
   return result;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getAllProductsFromDB = async (search: Record<string, any>) => {
-  const query: Record<string, any> = {};
-  for (const key in search) {
-    if (search[key]) {
-      query[key] = { $regex: search[key], $options: 'i' };
+const getAllProductsFromDB = async (query: Record<string, unknown>) => {
+  const queryObj = { ...query };
+
+  // Search functionality
+  const productSearchableFields = ['name', 'brand', 'type', 'description'];
+  let search = '';
+  if (query?.search) {
+    search = query.search as string;
+  }
+  const searchQuery = Product.find({
+    $or: productSearchableFields.map((field) => ({
+      [field]: { $regex: search, $options: 'i' },
+    })),
+  });
+
+  // Filtering functionality
+  const excludeFields = [
+    'search',
+    'sortBy',
+    'sortOrder',
+    'minPrice',
+    'maxPrice',
+    'brand',
+    'type',
+    'inStock',
+  ];
+  excludeFields.forEach((el) => delete queryObj[el]);
+
+  // Construct filter object
+  const filter: Record<string, unknown> = {};
+
+  // Filtering by price range
+  if (query?.minPrice || query?.maxPrice) {
+    filter.price = {};
+    if (query?.minPrice) {
+      (filter.price as Record<string, number>)['$gte'] = Number(query.minPrice);
+    }
+    if (query?.maxPrice) {
+      (filter.price as Record<string, number>)['$lte'] = Number(query.maxPrice);
     }
   }
-  const result = await Product.find(query);
-  return result;
+
+  // Filtering by brand
+  if (query?.brand) {
+    filter.brand = query.brand as string;
+  }
+
+  // Filtering by type
+  if (query?.type) {
+    filter.type = query.type as string;
+  }
+
+  // Filtering by availability (inStock)
+  if (query?.inStock) {
+    filter.inStock = query.inStock === 'true'; // Convert string to boolean
+  }
+
+  const filterQuery = searchQuery.find(filter);
+
+  // Sorting functionality
+  let sortBy = 'price';
+  if (query?.sortBy) {
+    sortBy = query.sortBy as string;
+  }
+
+  // Ascending or descending order
+  if (query?.sortOrder) {
+    const validSortOrders = ['asc', 'desc'];
+    if (!validSortOrders.includes(query.sortOrder as string)) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        "Invalid sortOrder value. It must be 'asc' or 'desc'.",
+      );
+    }
+    const sortOrder = query.sortOrder === 'desc' ? '-' : '';
+    sortBy = `${sortOrder}${sortBy}`;
+  }
+
+  // Pagination
+  const page = Number(query.page) || 1; // Default page 1
+  const limit = Number(query.limit) || 9; // Default limit 9
+  const skip = (page - 1) * limit;
+
+  // Get total count of matching documents
+  const totalItems = await Product.countDocuments(filter);
+  const totalPages = Math.ceil(totalItems / limit);
+
+  const result = await filterQuery.sort(sortBy).skip(skip).limit(limit);
+
+  return {
+    products: result,
+    pagination: {
+      totalItems,
+      totalPages,
+      currentPage: page,
+      perPage: limit,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+    },
+  };
 };
 
 const getSingleProductFromDB = async (id: string) => {

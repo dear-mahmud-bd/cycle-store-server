@@ -9,7 +9,6 @@ import AppError from '../errors/AppError';
 import config from '../config';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  // eslint-disable-next-line no-console
   console.log(err);
 
   let statusCode = 500;

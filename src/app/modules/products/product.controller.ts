@@ -1,10 +1,9 @@
-import { Request, Response } from 'express';
 import { ProductServices } from './product.service';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
 
-const createProduct = catchAsync(async (req: Request, res: Response) => {
+const createProduct = catchAsync(async (req, res) => {
   const productData = req.body;
   // will call service function (with send this data)
   // after processing (sql/nosql) received response
@@ -17,7 +16,7 @@ const createProduct = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getAllProducts = catchAsync(async (req: Request, res: Response) => {
+const getAllProducts = catchAsync(async (req, res) => {
   const search = req.query;
   const result = await ProductServices.getAllProductsFromDB(search);
   sendResponse(res, {
@@ -28,7 +27,7 @@ const getAllProducts = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getSingleProduct = catchAsync(async (req: Request, res: Response) => {
+const getSingleProduct = catchAsync(async (req, res) => {
   const { productId } = req.params;
   const result = await ProductServices.getSingleProductFromDB(productId);
   sendResponse(res, {
@@ -39,7 +38,7 @@ const getSingleProduct = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateSingleProduct = catchAsync(async (req: Request, res: Response) => {
+const updateSingleProduct = catchAsync(async (req, res) => {
   const { productId } = req.params;
   const updates = req.body;
   const result = await ProductServices.updateSingleProductDataFromDB(
@@ -54,7 +53,7 @@ const updateSingleProduct = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const deleteSingleProduct = catchAsync(async (req: Request, res: Response) => {
+const deleteSingleProduct = catchAsync(async (req, res) => {
   const { productId } = req.params;
   const result = await ProductServices.deleteProductFromDB(productId);
   sendResponse(res, {
