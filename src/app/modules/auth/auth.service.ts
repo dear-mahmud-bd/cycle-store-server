@@ -1,12 +1,16 @@
-import { Error } from 'mongoose';
 import config from '../../config';
 import { TUser } from '../user/user.interface';
 import { User } from '../user/user.model';
 import jwt from 'jsonwebtoken';
+import AppError from '../../errors/AppError';
+import httpStatus from 'http-status';
 
 const registerUser = async (payload: TUser) => {
   if (await User.isEmailExist(payload.email)) {
-    throw new Error('There is already a user registered with this email.');
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'There is already a user registered with this email.',
+    );
   }
   const result = await User.create(payload);
   return result;
@@ -15,12 +19,13 @@ const registerUser = async (payload: TUser) => {
 const loginUser = async (payload: TUser) => {
   const user = await User.isEmailExist(payload.email);
   if (!user) {
-    throw new Error(
-      'Invalid Credentials', // 'Enter your email and password correctly.',
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Enter your email and password correctly.',
     );
   }
   if (user.isBlocked) {
-    throw new Error('You are blocked!');
+    throw new AppError(httpStatus.FORBIDDEN, 'You are blocked!');
   }
 
   const isMatched = await User.isPasswordMatched(
@@ -28,8 +33,9 @@ const loginUser = async (payload: TUser) => {
     user.password,
   );
   if (!isMatched) {
-    throw new Error(
-      'Invalid Credentials', // 'Enter your email and password correctly.',
+    throw new AppError(
+      httpStatus.UNAUTHORIZED,
+      'Enter your email and password correctly.', // 'Invalid Credentials',
     );
   }
 
@@ -44,7 +50,13 @@ const loginUser = async (payload: TUser) => {
   return { token };
 };
 
+const getAllUsers = async () => {
+  const users = await User.find({}, { password: 0 });
+  return users;
+};
+
 export const AuthServices = {
   registerUser,
   loginUser,
+  getAllUsers,
 };

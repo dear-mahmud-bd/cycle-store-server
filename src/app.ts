@@ -8,7 +8,15 @@ const app: Application = express();
 
 //parsers
 app.use(express.json());
-app.use(cors());
+// app.use(cors({ origin: "*", credentials: true }));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      callback(null, origin); // Allow all origins dynamically
+    },
+    credentials: true,
+  }),
+);
 
 // application routes
 app.use('/api', router);

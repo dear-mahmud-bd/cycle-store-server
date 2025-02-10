@@ -34,6 +34,16 @@ const createOrderIntoDB = async (orderData: TOrder) => {
   return order;
 };
 
+const getAllOrdersFromDB = async () => {
+  const orders = await OrderModel.find().populate('product');
+  return orders;
+};
+
+const getUserOrdersFromDB = async (email: string) => {
+  const orders = await OrderModel.find({ email }).populate('product');
+  return orders;
+};
+
 const calculateRevenueFromDB = async () => {
   const revenue = await OrderModel.aggregate([
     {
@@ -48,5 +58,7 @@ const calculateRevenueFromDB = async () => {
 
 export const OrderServices = {
   createOrderIntoDB,
+  getAllOrdersFromDB,
+  getUserOrdersFromDB,
   calculateRevenueFromDB,
 };

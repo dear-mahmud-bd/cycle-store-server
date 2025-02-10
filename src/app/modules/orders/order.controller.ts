@@ -15,6 +15,27 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllOrders = catchAsync(async (req: Request, res: Response) => {
+  const orders = await OrderServices.getAllOrdersFromDB();
+  sendResponse(res, {
+    success: true,
+    message: 'Orders fetched successfully',
+    statusCode: httpStatus.OK,
+    data: orders,
+  });
+});
+
+const getUserOrders = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const orders = await OrderServices.getUserOrdersFromDB(email);
+  sendResponse(res, {
+    success: true,
+    message: 'Orders fetched successfully',
+    statusCode: httpStatus.OK,
+    data: orders,
+  });
+});
+
 const calculateRevenue = catchAsync(async (req: Request, res: Response) => {
   const revenue = await OrderServices.calculateRevenueFromDB();
   sendResponse(res, {
@@ -27,5 +48,7 @@ const calculateRevenue = catchAsync(async (req: Request, res: Response) => {
 
 export const OrderController = {
   createOrder,
+  getAllOrders,
+  getUserOrders,
   calculateRevenue,
 };

@@ -13,6 +13,12 @@ router.post(
   validateRequest(OrderValidationSchema.createOrderValidationSchema),
   OrderController.createOrder,
 );
+router.get('/', AuthGuard(USER_ROLE.admin), OrderController.getAllOrders);
+router.get(
+  '/:email',
+  AuthGuard(USER_ROLE.customer, USER_ROLE.admin),
+  OrderController.getUserOrders,
+);
 router.get(
   '/revenue',
   AuthGuard(USER_ROLE.admin),

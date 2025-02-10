@@ -1,8 +1,8 @@
 export enum OrderStatusType {
   pending = 'pending',
-  canceled = 'canceled',
   approved = 'approved',
   delivered = 'delivered',
+  cancelled = 'cancelled',
 }
 
 export type TOrder = {
