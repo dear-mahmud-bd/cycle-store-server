@@ -3,6 +3,7 @@ import catchAsync from '../../utils/catchAsync';
 import { AuthServices } from './auth.service';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
 
 const register = catchAsync(async (req: Request, res: Response) => {
   const userData = req.body;
@@ -37,8 +38,53 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getUserByEmail = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const user = await AuthServices.getUserByEmail(email);
+  sendResponse(res, {
+    success: true,
+    message: 'User retrieved successfully',
+    statusCode: httpStatus.OK,
+    data: user,
+  });
+});
+
+const updateUserName = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const { name: newName } = req.body;
+  const updatedName = { name: newName };
+  const updatedUser = await AuthServices.updateUserName(email, updatedName);
+  sendResponse(res, {
+    success: true,
+    message: 'User name updated successfully',
+    statusCode: httpStatus.OK,
+    data: updatedUser,
+  });
+});
+
+const changePassword = catchAsync(async (req: Request, res: Response) => {
+  const { email, oldPassword, newPassword } = req.body;
+  if (!email || !oldPassword || !newPassword) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'All fields are required.');
+  }
+  const result = await AuthServices.changeUserPassword(
+    email,
+    oldPassword,
+    newPassword,
+  );
+  sendResponse(res, {
+    success: true,
+    message: 'Password changed successfully',
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
+
 export const AuthControllers = {
   register,
   login,
   getAllUsers,
+  getUserByEmail,
+  updateUserName,
+  changePassword,
 };

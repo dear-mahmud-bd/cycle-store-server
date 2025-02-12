@@ -11,4 +11,22 @@ router.post('/login', AuthControllers.login);
 
 router.get('/users', AuthGuard(USER_ROLE.admin), AuthControllers.getAllUsers);
 
+router.get(
+  '/:email',
+  AuthGuard(USER_ROLE.admin, USER_ROLE.customer),
+  AuthControllers.getUserByEmail,
+);
+
+router.patch(
+  '/:email/update-name',
+  AuthGuard(USER_ROLE.admin, USER_ROLE.customer),
+  AuthControllers.updateUserName,
+);
+
+router.patch(
+  '/change-password',
+  AuthGuard(USER_ROLE.admin, USER_ROLE.customer),
+  AuthControllers.changePassword,
+);
+
 export const AuthRoutes = router;
