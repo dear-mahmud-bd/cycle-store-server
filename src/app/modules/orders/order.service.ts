@@ -2,6 +2,8 @@ import { TOrder } from './order.interface';
 import { Product } from '../products/product.model';
 import { OrderModel } from './order.model';
 import { Types } from 'mongoose';
+import AppError from '../../errors/AppError';
+import httpStatus from 'http-status';
 
 const createOrderIntoDB = async (orderData: TOrder) => {
   const product = await Product.findById({
@@ -44,6 +46,18 @@ const getUserOrdersFromDB = async (email: string) => {
   return orders;
 };
 
+const updateOrderStatusInDB = async (orderId: string, status: string) => {
+  const order = await OrderModel.findByIdAndUpdate(
+    orderId,
+    { status },
+    { new: true },
+  );
+  if (!order) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Order not found');
+  }
+  return order;
+};
+
 const calculateRevenueFromDB = async () => {
   const revenue = await OrderModel.aggregate([
     {
@@ -60,5 +74,6 @@ export const OrderServices = {
   createOrderIntoDB,
   getAllOrdersFromDB,
   getUserOrdersFromDB,
+  updateOrderStatusInDB,
   calculateRevenueFromDB,
 };

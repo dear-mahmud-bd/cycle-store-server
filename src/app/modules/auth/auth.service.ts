@@ -120,6 +120,33 @@ const changeUserPassword = async (
   return { message: 'Password changed successfully.' };
 };
 
+const updateUserRole = async (userId: string, newRole: string) => {
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { role: newRole },
+    { new: true, runValidators: true },
+  );
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  return { message: 'User role updated successfully', user };
+};
+
+const updateUserBlockStatus = async (userId: string, isBlocked: boolean) => {
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { isBlocked },
+    { new: true },
+  );
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  return {
+    message: `User has been ${isBlocked ? 'blocked' : 'unblocked'}`,
+    user,
+  };
+};
+
 export const AuthServices = {
   registerUser,
   loginUser,
@@ -127,4 +154,6 @@ export const AuthServices = {
   getUserByEmail,
   updateUserName,
   changeUserPassword,
+  updateUserRole,
+  updateUserBlockStatus,
 };

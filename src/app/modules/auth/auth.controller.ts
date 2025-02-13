@@ -80,6 +80,33 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateUserBlockStatus = catchAsync(
+  async (req: Request, res: Response) => {
+    const { userId, isBlocked } = req.body;
+    const updatedUser = await AuthServices.updateUserBlockStatus(
+      userId,
+      isBlocked,
+    );
+    sendResponse(res, {
+      success: true,
+      message: `User has been ${isBlocked ? 'blocked' : 'unblocked'} successfully`,
+      statusCode: httpStatus.OK,
+      data: updatedUser,
+    });
+  },
+);
+
+const updateUserRole = catchAsync(async (req: Request, res: Response) => {
+  const { userId, role } = req.body;
+  const updatedUser = await AuthServices.updateUserRole(userId, role);
+  sendResponse(res, {
+    success: true,
+    message: 'User role updated successfully',
+    statusCode: httpStatus.OK,
+    data: updatedUser,
+  });
+});
+
 export const AuthControllers = {
   register,
   login,
@@ -87,4 +114,6 @@ export const AuthControllers = {
   getUserByEmail,
   updateUserName,
   changePassword,
+  updateUserRole,
+  updateUserBlockStatus,
 };

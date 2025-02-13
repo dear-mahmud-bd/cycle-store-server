@@ -19,6 +19,11 @@ router.get(
   AuthGuard(USER_ROLE.customer, USER_ROLE.admin),
   OrderController.getUserOrders,
 );
+router.patch(
+  '/:orderId/status',
+  AuthGuard(USER_ROLE.admin, USER_ROLE.customer),
+  OrderController.updateOrderStatus,
+);
 router.get(
   '/revenue',
   AuthGuard(USER_ROLE.admin),
