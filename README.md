@@ -1,126 +1,158 @@
+# Bicycle Store - Backend [API](https://bicycle-store-04-1.vercel.app/)
 
-# Bicycle Inventory Management [API](https://bicycle-store-04.vercel.app/)
+## 🚀 Project Overview
 
-## Introduction
-The **Bicycle Inventory Management API** is a backend application built with TypeScript and Node.js. It allows efficient management of products and orders, supporting features like product creation, stock management, order processing, and revenue calculations. The application ensures type safety, better code management, and extensibility through TypeScript.
-
----
+The **Bicycle Store Application** is a full-stack web application that allows users to browse and purchase bicycles, while administrators can manage products and orders. This repository contains the **backend API** built using **Node.js, Express.js, and MongoDB**.
 
 ## Live Demo
-Explore the live application here: **[Live URL](https://bicycle-store-04-1.vercel.app/)**
+- Explore the live application here: **[Live URL](https://bicycle-store-04-1-client.vercel.app/)**
+- Explore the frontend here: **[GitHub URL](https://github.com/dear-mahmud-bd/cycle-store-client)**
 
----
 
-## Features
-- **Product Management**:
-  - Create, update, and delete products.
-  - Automatically set `inStock` status based on product quantity.
-- **Order Processing**:
-  - Place orders, reduce product inventory, and manage insufficient stock scenarios.
-  - Validate orders to ensure minimum total price conditions.
-- **Revenue Calculation**:
-  - Calculate total revenue using aggregation pipelines.
-- **Validation**:
-  - Use **zod** for schema validation to ensure data integrity.
-- **Type Safety**:
-  - Leverages TypeScript for better maintainability.
-- **Code Quality**:
-  - Pre-configured ESLint and Prettier for consistent and clean code.
+## 🎯 Features
 
----
+### 🔐 Authentication & Authorization
 
-## Technologies Used
-- **Backend Framework**: Express.js
-- **Database**: MongoDB
-- **Validation**: Zod
-- **TypeScript**: Strong typing and modular design
-- **Environment Management**: dotenv for managing environment variables
+- Secure user registration with hashed passwords.
+- JWT-based authentication for session management.
+- Role-based access control (Customer, Admin).
+- Logout functionality by clearing tokens.
 
----
+### 🌍 Public Routes
 
-## Getting Started
+- **Home Page:** Featured bicycles, banners, and extra content.
+- **All Bicycles Page:** Search, filter, and view bicycles.
+- **Bicycle Details Page:** View detailed specifications.
+- **About Page:** Shop details and mission.
 
-### Prerequisites
-- Node.js (v16+)
-- npm (v7+)
-- MongoDB instance running locally or on a cloud provider like MongoDB Atlas.
+### 🔒 Private Routes
 
----
+- **Checkout Page:** Users can place orders with real-time stock validation.
+- **User Dashboard:** View order history and update profile settings.
+- **Admin Dashboard:** Manage users, products, and orders.
 
----
+### 💳 Payment Integration
 
-## Installation and Setup (Locally)
+- Supports **SSLCommerz** payment gateways.
+- Secure transaction handling.
 
-1. **Clone the Repository**  
-   ```bash
-   git clone https://github.com/dear-mahmud-bd/cycle-store-server-with-mongoose.git  
-   cd cycle-store-server-with-mongoose  
-   ```  
+### 📊 Admin Sales Dashboard (Optional)
 
-2. **Install Dependencies**  
-   ```bash
-   npm install  
-   ```  
+- **Sales Overview Chart:** Visual sales analysis.
+- **Key Metrics:** Total revenue, units sold, top-selling bicycles.
 
-3. **Environment Configuration**  
-   Create a `.env` file in the root directory:  
-   ```plaintext
-   NODE_ENV=development  
-   PORT= provide your port number  
-   DATABASE_URL= your MongoDB url (like: mongodb+srv://YOUR_SECRET_PROJECT:YOUR_SECRET_PASS@cluster0.1plyg.mongodb.net/blogs-data?retryWrites=true&w=majority&appName=YOUR_CLUSTER)
-   BCRYPT_SALT_ROUNDS=955ca0a22be7d3105b6621a8c8834da90e4848a85678273374062810e70b8efd5231856b7af73b9b413af01dbd814f2a3186a29c96630a1af53099babba140a0
-JWT_ACCESS_TOKEN=2dc76ee44f024be0b021fc1a1e178fe2ee75fa0626fd2c49214c944a2c29df3b86ab44c7e73df922f38cdc8027ba494aedcd034a6218aa017242530eaf0f216c
-JWT_ACCESS_TOKEN_EXPIRES= your-recomended-time
-SSLCOMMERZ_STORE_ID=your-store-id
-SSLCOMMERZ_STORE_PASSWORD=your-store-password
-   ```  
+## 🛠️ Tech Stack
 
-4. **Run the Application**  
-   ```bash
-   npm run start:dev
-   ```  
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB, Mongoose
+- **Authentication:** JWT, bcrypt.js
+- **Payment Integration:** SSLCommerz
+- **API Documentation:** Postman
 
-5. **Visit the Application**  
-   Open your browser and navigate to: `http://localhost:5000`  
+## 📂 Folder Structure
 
----
-
-## Application Structure
 ```
-src/
-├── app/
-│   ├── modules/
-│   │   ├── products/
-│   │   │   ├── product.controller.ts
-│   │   │   ├── product.model.ts
-│   │   │   ├── product.route.ts
-│   │   │   ├── product.service.ts
-│   │   │   ├── product.validation.ts
-│   │   ├── orders/
-│   │       ├── order.controller.ts
-│   │       ├── order.model.ts
-│   │       ├── order.route.ts
-│   │       ├── order.service.ts
-│   │       ├── order.validation.ts
-│   ├── config/
-│   │   ├── index.ts
-├── app.ts
-├── server.ts
+backend/
+│── src/
+│   ├── app/
+│   │   ├── config/             # Environment variables and configurations
+│   │   ├── errors/             # Manage all type of errors
+│   │   ├── interface/          # Global declaretion
+│   │   ├── middlewares/        # Authentication & validation middleware
+│   │   ├── models/             # Mongoose schemas
+│   │   ├── routes/             # API routes
+│   │   ├── utils/              # Helper functions
+│   ├── app.ts              # Express app setup
+│   ├── server.ts           # Server entry point
+│── .env                    # Environment variables
+│── package.json            # Dependencies & scripts
+│── README.md               # Project documentation
 ```
 
----
+## 🔧 Installation & Setup (Locally)
 
-## API Endpoints
+### 1️⃣ Clone the Repository
 
-### Product APIs
-1. **Create Product**: `POST /api/products`
-2. **Get All Products**: `GET /api/products`
-3. **Get Single Product**: `GET /api/products/:productId`
-4. **Update Product**: `PUT /api/products/:productId`
-5. **Delete Product**: `DELETE /api/products/:productId`
+```sh
+git clone https://github.com/dear-mahmud-bd/cycle-store-server.git
+cd cycle-store-server
+```
 
-### Order APIs
-1. **Create Order**: `POST /api/orders`
-2. **Calculate Revenue**: `GET /api/orders/revenue`
+### 2️⃣ Install Dependencies
 
----
+```sh
+npm install
+```
+
+### 3️⃣ Setup Environment Variables
+
+Create a `.env` file and configure:
+
+```
+NODE_ENV=development
+PORT=YOUR_RECOMENDED_PORT_NUMBER
+DATABASE_URL=mongodb+srv://YOUR_USER_NAME:YOUR_PASS@cluster0.f86zk.mongodb.net/YOUR_STORE_NAME?retryWrites=true&w=majority&appName=Cluster0
+BCRYPT_SALT_ROUNDS=YOUR_SECRET_SALT_ROUND
+JWT_ACCESS_TOKEN=YOUR_SECRET_TOKEN
+JWT_ACCESS_TOKEN_EXPIRES=YOUR_RECOMENDED_TIME
+SSLCOMMERZ_STORE_ID=YOUR_SSLCOMMERZ_STORE_ID
+SSLCOMMERZ_STORE_PASSWORD=YOUR_SSLCOMMERZ_STORE_PASSWORD
+
+```
+
+### 4️⃣ Run the Server
+
+```sh
+npm run dev
+```
+
+## 🔌 API Endpoints
+
+### Authentication Routes
+
+| Method | Endpoint                    | Description                             |
+| ------ | --------------------------- | --------------------------------------- |
+| POST   | `/auth/register`            | Register a new user                     |
+| POST   | `/auth/login`               | User login                              |
+| GET    | `/auth/users`               | Get all users (Admin only)              |
+| GET    | `/auth/:email`              | Get user by email (Admin & Customer)    |
+| PATCH  | `/auth/:email/update-name`  | Update user name (Admin & Customer)     |
+| PATCH  | `/auth/change-password`     | Change user password (Admin & Customer) |
+| PATCH  | `/auth/update-role`         | Update user role (Admin only)           |
+| PATCH  | `/auth/update-block-status` | Block/unblock user (Admin only)         |
+
+### Product Routes
+
+| Method | Endpoint               | Description                         |
+| ------ | ---------------------- | ----------------------------------- |
+| GET    | `/products`            | Get all products                    |
+| GET    | `/products/:productId` | Get single product details          |
+| POST   | `/products`            | Create a new product (Admin only)   |
+| PATCH  | `/products/:productId` | Update product details (Admin only) |
+| DELETE | `/products/:productId` | Delete a product (Admin only)       |
+
+### Order Routes
+
+| Method | Endpoint                  | Description                                 |
+| ------ | ------------------------- | ------------------------------------------- |
+| POST   | `/orders`                 | Create a new order (Customer & Admin)       |
+| GET    | `/orders`                 | Get all orders (Admin only)                 |
+| GET    | `/orders/:email`          | Get orders by user email (Customer & Admin) |
+| PATCH  | `/orders/:orderId/status` | Update order status (Customer & Admin)      |
+| GET    | `/orders/revenue`         | Get revenue report (Admin only)             |
+
+### Payment Routes
+
+| Method | Endpoint                            | Description                         |
+| ------ | ----------------------------------- | ----------------------------------- |
+| POST   | `/payment/initiate`                 | Initiate payment (Customer & Admin) |
+| POST   | `/payment/success/:tranId/:orderId` | Verify payment success              |
+| POST   | `/payment/fail`                     | Handle failed payment               |
+
+## 🚀 Deployment
+
+### Deploy on Vercel
+
+```sh
+vercel deploy --prod
+```
