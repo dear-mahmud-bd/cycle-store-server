@@ -6,7 +6,10 @@ import httpStatus from 'http-status';
 
 const createProductIntoDB = async (productData: TProduct) => {
   if (await Product.isNameExists(productData.name)) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Product already exists!');
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Product with same name already exists!',
+    );
   }
   const result = await Product.create(productData);
   return result;

@@ -40,10 +40,12 @@ const getSingleProduct = catchAsync(async (req, res) => {
 
 const updateSingleProduct = catchAsync(async (req, res) => {
   const { productId } = req.params;
-  const updates = req.body;
+  const updatedData = req.body;
+  // eslint-disable-next-line no-console
+  console.log(productId, updatedData);
   const result = await ProductServices.updateSingleProductDataFromDB(
     productId,
-    updates,
+    updatedData,
   );
   sendResponse(res, {
     success: true,

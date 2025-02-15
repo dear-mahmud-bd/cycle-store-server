@@ -7,7 +7,7 @@ The **Bicycle Inventory Management API** is a backend application built with Typ
 ---
 
 ## Live Demo
-Explore the live application here: **[Live URL](https://bicycle-store-04.vercel.app/)**
+Explore the live application here: **[Live URL](https://bicycle-store-04-1.vercel.app/)**
 
 ---
 
@@ -68,6 +68,11 @@ Explore the live application here: **[Live URL](https://bicycle-store-04.vercel.
    NODE_ENV=development  
    PORT= provide your port number  
    DATABASE_URL= your MongoDB url (like: mongodb+srv://YOUR_SECRET_PROJECT:YOUR_SECRET_PASS@cluster0.1plyg.mongodb.net/blogs-data?retryWrites=true&w=majority&appName=YOUR_CLUSTER)
+   BCRYPT_SALT_ROUNDS=955ca0a22be7d3105b6621a8c8834da90e4848a85678273374062810e70b8efd5231856b7af73b9b413af01dbd814f2a3186a29c96630a1af53099babba140a0
+JWT_ACCESS_TOKEN=2dc76ee44f024be0b021fc1a1e178fe2ee75fa0626fd2c49214c944a2c29df3b86ab44c7e73df922f38cdc8027ba494aedcd034a6218aa017242530eaf0f216c
+JWT_ACCESS_TOKEN_EXPIRES= your-recomended-time
+SSLCOMMERZ_STORE_ID=your-store-id
+SSLCOMMERZ_STORE_PASSWORD=your-store-password
    ```  
 
 4. **Run the Application**  

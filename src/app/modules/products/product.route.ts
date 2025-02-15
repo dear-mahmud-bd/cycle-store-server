@@ -15,7 +15,7 @@ router.post(
   validateRequest(ProductValidationSchema.createProductValidationSchema),
   ProductController.createProduct,
 );
-router.put(
+router.patch(
   '/:productId',
   AuthGuard(USER_ROLE.admin),
   ProductController.updateSingleProduct,

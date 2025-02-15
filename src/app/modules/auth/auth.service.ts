@@ -45,7 +45,7 @@ const loginUser = async (payload: TUser) => {
     role: user.role,
   };
   const token = jwt.sign(JwtPayload, config.jwt_access_token as string, {
-    expiresIn: config.jwt_access_token_expires,
+    expiresIn: (config.jwt_access_token_expires as string) || '10d',
   });
 
   return { token };
